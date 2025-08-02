@@ -2,7 +2,8 @@ import svgPaths from "./imports/svg-8ik6ppt551";
 import svgPathsMobile from "./imports/svg-e7aom333d7";
 import svgPathsUploaded from "./imports/svg-3bujfkkrs7";
 import svgPathsUploadedMobile from "./imports/svg-2ij2klx2ty";
-import imgPikachu from "figma:asset/a6368de73b64053a9ca02c9b339ef90445998d7a.png";
+// Placeholder for Pikachu image - replace with actual asset
+const imgPikachu = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRkYwMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2MFFNNTAgNjVRNjAgNjAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHRleHQgeD0iNTAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjMDAwIj5QaWthY2h1PC90ZXh0Pjwvc3ZnPg==";
 import { useState, useEffect } from "react";
 
 function UploadCloud({ isMobile = false }: { isMobile?: boolean }) {
@@ -21,7 +22,7 @@ function UploadCloud({ isMobile = false }: { isMobile?: boolean }) {
       >
         <g id="Upload cloud">
           <path
-            d={paths[pathKey]}
+            d={paths[pathKey as keyof typeof paths]}
             id="Icon"
             stroke="#F1D302"
             strokeLinecap="round"
@@ -50,7 +51,7 @@ function DollarSign({ isMobile = false }: { isMobile?: boolean }) {
       >
         <g clipPath="url(#clip0_dollar)" id="Dollar sign">
           <path
-            d={paths[pathKey]}
+            d={paths[pathKey as keyof typeof paths]}
             id="Icon"
             stroke="#1E1E1E"
             strokeLinecap="round"
@@ -84,7 +85,7 @@ function Github({ isMobile = false }: { isMobile?: boolean }) {
       >
         <g clipPath="url(#clip0_github)" id="Github">
           <path
-            d={paths[pathKey]}
+            d={paths[pathKey as keyof typeof paths]}
             id="Icon"
             stroke="#F1D302"
             strokeLinecap="round"
