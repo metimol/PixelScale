@@ -336,7 +336,7 @@ export default function App() {
           
           {/* GitHub Link - Hidden on mobile */}
           <div className="hidden md:block">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="block p-[10px]">
+            <a href="https://github.com/metimol/PixelScale" target="_blank" rel="noopener noreferrer" className="block p-[10px]">
               <Github />
             </a>
           </div>
@@ -413,7 +413,7 @@ export default function App() {
         <div className="box-border content-stretch flex flex-row items-center justify-between md:justify-end px-[15px] md:px-[50px] py-2.5 relative w-full">
           {/* GitHub Link - Visible on mobile */}
           <div className="block md:hidden">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="block">
+            <a href="https://github.com/metimol/PixelScale" target="_blank" rel="noopener noreferrer" className="block">
               <Github isMobile={true} />
             </a>
           </div>
@@ -425,9 +425,14 @@ export default function App() {
             </div>
             <div className="relative">
               <div className="box-border content-stretch flex flex-row items-center justify-center overflow-clip p-0 relative">
-                <div className="font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold leading-[0] relative shrink-0 text-[#f1d302] text-[15px] text-left text-nowrap">
+                <a
+                  href="https://github.com/metimol"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold leading-[0] relative shrink-0 text-[#f1d302] text-[15px] text-left text-nowrap hover:underline"
+                >
                   <p className="block leading-[normal] whitespace-pre">Metimol</p>
-                </div>
+                </a>
               </div>
               <div
                 aria-hidden="true"
