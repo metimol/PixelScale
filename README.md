@@ -1,6 +1,6 @@
 # PixelScale
 
-AI-powered pixel art upscaling application built with React and TypeScript.
+Pixel art upscaling application built with React and TypeScript.
 
 ## Features
 
@@ -43,13 +43,3 @@ This project is automatically deployed to GitHub Pages using GitHub Actions when
 ## Live Demo
 
 Visit the live application at: https://metimol.github.io/PixelScale/
-
-## License
-
-Created by Metimol - Generated from Figma design using AI.
-
-## Attributions
-
-This project includes components from [shadcn/ui](https://ui.shadcn.com/) used under [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md).
-
-Photos from [Unsplash](https://unsplash.com) used under [license](https://unsplash.com/license).

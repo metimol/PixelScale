@@ -2,8 +2,7 @@ import svgPaths from "./imports/svg-8ik6ppt551";
 import svgPathsMobile from "./imports/svg-e7aom333d7";
 import svgPathsUploaded from "./imports/svg-3bujfkkrs7";
 import svgPathsUploadedMobile from "./imports/svg-2ij2klx2ty";
-// Placeholder for Pikachu image - replace with actual asset
-const imgPikachu = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRkYwMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2MFFNNTAgNjVRNjAgNjAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHRleHQgeD0iNTAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjMDAwIj5QaWthY2h1PC90ZXh0Pjwvc3ZnPg==";
+import PikachuSVG from "./imports/Pikachu.svg";
 import { useState, useEffect } from "react";
 import { processImageForUpscaling, dataUrlToBlob, ProcessedImage } from "./src/utils/imageProcessor";
 
@@ -385,10 +384,11 @@ export default function App() {
         {/* Pikachu Character - Desktop */}
         <div className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 h-[300px] w-[300px] items-center justify-center pointer-events-none">
           <div className="flex-none rotate-[30.05deg]">
-            <div
-              className="bg-center bg-cover bg-no-repeat size-[220px]"
-              data-name="Pikachu"
-              style={{ backgroundImage: `url('${imgPikachu}')` }}
+            <img
+              src={PikachuSVG}
+              alt="Pikachu"
+              className="size-[220px]"
+              draggable={false}
             />
           </div>
         </div>
@@ -397,10 +397,11 @@ export default function App() {
         <div className="flex md:hidden justify-center mb-8">
           <div className="flex items-center justify-center h-[200px] w-[200px]">
             <div className="flex-none rotate-[30.05deg]">
-              <div
-                className="bg-center bg-cover bg-no-repeat size-[150px]"
-                data-name="Pikachu"
-                style={{ backgroundImage: `url('${imgPikachu}')` }}
+              <img
+                src={PikachuSVG}
+                alt="Pikachu"
+                className="size-[150px]"
+                draggable={false}
               />
             </div>
           </div>
