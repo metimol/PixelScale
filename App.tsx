@@ -173,6 +173,15 @@ function Upload({ isMobile = false, onFileSelect, isProcessing }: { isMobile?: b
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => !isProcessing && document.getElementById('file-input')?.click()}
+        role="button"
+        tabIndex={0}
+        aria-label={isProcessing ? "Processing image, please wait" : "Click or drag and drop to upload an image file"}
+        onKeyDown={(e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && !isProcessing) {
+            e.preventDefault();
+            document.getElementById('file-input')?.click();
+          }
+        }}
       >
         <UploadCloud isMobile={isMobile} />
         <div className={`flex flex-col font-['Pixelify_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[#f1d302] ${textSize} text-center text-nowrap`}>
@@ -187,6 +196,7 @@ function Upload({ isMobile = false, onFileSelect, isProcessing }: { isMobile?: b
           onChange={handleFileInput}
           className="hidden"
           disabled={isProcessing}
+          aria-label="Select image file to upload for pixel art upscaling"
         />
       </div>
       <div
@@ -355,16 +365,16 @@ export default function App() {
         </div>
 
         {/* Description */}
-        <div className="max-w-4xl mx-auto mb-8 md:mb-16">
-          <p className="font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold leading-[normal] text-[#f1d302] text-[20px] md:text-[25px] text-center">
+        <section className="max-w-4xl mx-auto mb-8 md:mb-16">
+          <h1 className="font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold leading-[normal] text-[#f1d302] text-[20px] md:text-[25px] text-center">
             Transform your low-resolution pixel art into crisp, high-quality
             images. No sign-up required. No watermarks. Just pure pixel
             perfection.
-          </p>
-        </div>
+          </h1>
+        </section>
 
         {/* Upload Area or Uploaded State */}
-        <div className="relative mb-8 md:mb-16">
+        <section className="relative mb-8 md:mb-16" aria-label="Image upload and processing section">
           {processedImage ? (
             <UploadedState 
               isMobile={isMobile}
@@ -379,7 +389,7 @@ export default function App() {
               isProcessing={isProcessing}
             />
           )}
-        </div>
+        </section>
 
         {/* Pikachu Character - Desktop */}
         <div className="hidden md:block absolute right-8 top-32 h-[300px] w-[300px] pointer-events-none">
