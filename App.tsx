@@ -343,12 +343,12 @@ export default function App() {
         </div>
         <div
           aria-hidden="true"
-          className="absolute border-[#f1d302] border-[0px_0px_5px] md:border-[0px_0px_7px] border-solid inset-0 pointer-events-none"
+          className="absolute border-[#f1d302] border-b-[5px] md:border-b-[7px] border-solid inset-0 pointer-events-none"
         />
       </header>
 
       {/* Body */}
-      <main className="relative px-4 md:px-[50px] py-8 md:py-16">
+      <main className="relative px-4 md:px-[50px] py-8 md:py-16 overflow-hidden">
         {/* Free Tool Badge */}
         <div className="flex justify-center mb-8 md:mb-12">
           <Component100Free isMobile={isMobile} />
@@ -382,7 +382,7 @@ export default function App() {
         </div>
 
         {/* Pikachu Character - Desktop */}
-        <div className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 h-[300px] w-[300px] items-center justify-center pointer-events-none">
+        <div className="hidden md:block absolute right-8 top-32 h-[300px] w-[300px] pointer-events-none">
           <div className="flex-none rotate-[30.05deg]">
             <img
               src={PikachuSVG}
@@ -431,7 +431,7 @@ export default function App() {
               </div>
               <div
                 aria-hidden="true"
-                className="absolute border-[#f1d302] border-[0px_0px_1px] border-solid inset-0 pointer-events-none"
+                className="absolute border-[#f1d302] border-b border-solid inset-0 pointer-events-none"
               />
             </div>
           </div>
