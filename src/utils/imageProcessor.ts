@@ -14,7 +14,7 @@ export interface ProcessedImage {
 }
 
 /**
- * Calculate target dimensions to add exactly 4000 pixels while maintaining aspect ratio
+ * Calculate target dimensions to add exactly 4000 pixels to both width and height
  */
 function calculateTargetDimensions(originalWidth: number, originalHeight: number): {
   newWidth: number;
@@ -23,17 +23,16 @@ function calculateTargetDimensions(originalWidth: number, originalHeight: number
   pixelsAdded: number;
 } {
   const originalPixels = originalWidth * originalHeight;
-  const targetPixels = originalPixels + 4000;
   
-  // Calculate scale factor to achieve target pixels while maintaining aspect ratio
-  const scaleFactor = Math.sqrt(targetPixels / originalPixels);
+  // Add 4000 pixels to both width and height
+  const newWidth = originalWidth + 4000;
+  const newHeight = originalHeight + 4000;
   
-  // Calculate new dimensions
-  const newWidth = Math.round(originalWidth * scaleFactor);
-  const newHeight = Math.round(originalHeight * scaleFactor);
-  
-  // Calculate actual pixels added (may be slightly different due to rounding)
+  // Calculate actual pixels added
   const actualPixelsAdded = (newWidth * newHeight) - originalPixels;
+  
+  // Calculate overall scale factor for display purposes
+  const scaleFactor = Math.sqrt((newWidth * newHeight) / originalPixels);
   
   return {
     newWidth,
