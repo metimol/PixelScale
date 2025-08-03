@@ -354,13 +354,55 @@ export default function App() {
           <Component100Free isMobile={isMobile} />
         </div>
 
-        {/* Description */}
-        <div className="max-w-4xl mx-auto mb-8 md:mb-16">
-          <p className="font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold leading-[normal] text-[#f1d302] text-[20px] md:text-[25px] text-center">
-            Transform your low-resolution pixel art into crisp, high-quality
-            images. No sign-up required. No watermarks. Just pure pixel
-            perfection.
-          </p>
+        {/* Description and Pikachu Container */}
+        <div className="relative max-w-4xl mx-auto mb-8 md:mb-16">
+          {/* Description */}
+          <div className="relative">
+            <p className="font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold leading-[normal] text-[#f1d302] text-[20px] md:text-[25px] text-center lg:text-left lg:max-w-[70%]">
+              Transform your low-resolution pixel art into crisp, high-quality
+              images. No sign-up required. No watermarks. Just pure pixel
+              perfection.
+            </p>
+            
+            {/* Pikachu positioned relative to text */}
+            {/* Desktop (1024px+): Positioned to the right of text */}
+            <div className="hidden lg:block absolute right-0 -top-8 h-[300px] w-[300px] pointer-events-none">
+              <div className="flex-none rotate-[30.05deg]">
+                <img
+                  src={PikachuSVG}
+                  alt="Pikachu"
+                  className="size-[220px]"
+                  draggable={false}
+                />
+              </div>
+            </div>
+            
+            {/* Tablet (768px-1023px): Positioned below text, centered */}
+            <div className="hidden md:block lg:hidden mt-4 flex justify-center">
+              <div className="flex items-center justify-center h-[200px] w-[200px]">
+                <div className="flex-none rotate-[30.05deg]">
+                  <img
+                    src={PikachuSVG}
+                    alt="Pikachu"
+                    className="size-[160px]"
+                    draggable={false}
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Mobile (below 768px): Positioned to the right of text area */}
+            <div className="block md:hidden absolute -right-4 top-4 h-[120px] w-[120px] pointer-events-none">
+              <div className="flex-none rotate-[30.05deg]">
+                <img
+                  src={PikachuSVG}
+                  alt="Pikachu"
+                  className="size-[100px]"
+                  draggable={false}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Upload Area or Uploaded State */}
@@ -379,32 +421,6 @@ export default function App() {
               isProcessing={isProcessing}
             />
           )}
-        </div>
-
-        {/* Pikachu Character - Desktop */}
-        <div className="hidden md:block absolute right-8 top-32 h-[300px] w-[300px] pointer-events-none">
-          <div className="flex-none rotate-[30.05deg]">
-            <img
-              src={PikachuSVG}
-              alt="Pikachu"
-              className="size-[220px]"
-              draggable={false}
-            />
-          </div>
-        </div>
-
-        {/* Mobile Pikachu */}
-        <div className="flex md:hidden justify-center mb-8">
-          <div className="flex items-center justify-center h-[200px] w-[200px]">
-            <div className="flex-none rotate-[30.05deg]">
-              <img
-                src={PikachuSVG}
-                alt="Pikachu"
-                className="size-[150px]"
-                draggable={false}
-              />
-            </div>
-          </div>
         </div>
       </main>
 
