@@ -5,6 +5,7 @@ import svgPathsUploadedMobile from "./imports/svg-2ij2klx2ty";
 // Placeholder for Pikachu image - replace with actual asset
 const imgPikachu = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRkYwMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2MFFNNTAgNjVRNjAgNjAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHRleHQgeD0iNTAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjMDAwIj5QaWthY2h1PC90ZXh0Pjwvc3ZnPg==";
 import { useState, useEffect } from "react";
+import { processImageForUpscaling, dataUrlToBlob, ProcessedImage } from "./src/utils/imageProcessor";
 
 function UploadCloud({ isMobile = false }: { isMobile?: boolean }) {
   const size = isMobile ? "size-20" : "size-[120px]";
@@ -134,7 +135,7 @@ function Component100Free({ isMobile = false }: { isMobile?: boolean }) {
   );
 }
 
-function Upload({ isMobile = false, onFileSelect }: { isMobile?: boolean; onFileSelect: (file: File) => void }) {
+function Upload({ isMobile = false, onFileSelect, isProcessing }: { isMobile?: boolean; onFileSelect: (file: File) => void; isProcessing: boolean }) {
   const [isDragOver, setIsDragOver] = useState(false);
   const textSize = isMobile ? "text-[20px]" : "text-[30px]";
   const padding = isMobile ? "py-[40px]" : "py-[60px]";
@@ -168,16 +169,16 @@ function Upload({ isMobile = false, onFileSelect }: { isMobile?: boolean; onFile
   return (
     <div className="relative w-full max-w-4xl mx-auto" data-name="Upload">
       <div 
-        className={`box-border content-stretch flex flex-col gap-2.5 items-center justify-center overflow-clip px-4 ${padding} relative cursor-pointer transition-all duration-200 ${isDragOver ? 'bg-[#f1d302]/10' : ''}`}
+        className={`box-border content-stretch flex flex-col gap-2.5 items-center justify-center overflow-clip px-4 ${padding} relative cursor-pointer transition-all duration-200 ${isDragOver ? 'bg-[#f1d302]/10' : ''} ${isProcessing ? 'opacity-50 pointer-events-none' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        onClick={() => document.getElementById('file-input')?.click()}
+        onClick={() => !isProcessing && document.getElementById('file-input')?.click()}
       >
         <UploadCloud isMobile={isMobile} />
         <div className={`flex flex-col font-['Pixelify_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[#f1d302] ${textSize} text-center text-nowrap`}>
           <p className="block leading-[normal] whitespace-pre">
-            Upload your image here
+            {isProcessing ? "Processing image..." : "Upload your image here"}
           </p>
         </div>
         <input
@@ -186,6 +187,7 @@ function Upload({ isMobile = false, onFileSelect }: { isMobile?: boolean; onFile
           accept="image/*"
           onChange={handleFileInput}
           className="hidden"
+          disabled={isProcessing}
         />
       </div>
       <div
@@ -196,8 +198,9 @@ function Upload({ isMobile = false, onFileSelect }: { isMobile?: boolean; onFile
   );
 }
 
-function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: boolean; onDownload: () => void; onClear: () => void }) {
+function UploadedState({ isMobile = false, onDownload, onClear, processedImage }: { isMobile?: boolean; onDownload: () => void; onClear: () => void; processedImage: ProcessedImage }) {
   const textSize = isMobile ? "text-[25px]" : "text-[30px]";
+  const infoTextSize = isMobile ? "text-[15px]" : "text-[18px]";
   const buttonTextSize = isMobile ? "text-[20px]" : "text-[30px]";
   const padding = isMobile ? "py-[50px]" : "py-[60px]";
   const buttonWidth = isMobile ? "w-[101px]" : "w-[146px]";
@@ -209,6 +212,13 @@ function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: b
           <p className="block leading-[normal] whitespace-pre">
             Your image is ready
           </p>
+        </div>
+        
+        {/* Image Information */}
+        <div className={`flex flex-col gap-2 items-center font-['Pixelify_Sans:Regular',_sans-serif] font-normal text-[#f1d302] ${infoTextSize} text-center`}>
+          <p>Original: {processedImage.originalWidth} × {processedImage.originalHeight} ({processedImage.originalWidth * processedImage.originalHeight} pixels)</p>
+          <p>Upscaled: {processedImage.upscaledWidth} × {processedImage.upscaledHeight} ({processedImage.upscaledWidth * processedImage.upscaledHeight} pixels)</p>
+          <p>Added {processedImage.pixelsAdded} pixels (Scale: {processedImage.scaleFactor.toFixed(2)}x)</p>
         </div>
         
         {/* Buttons */}
@@ -249,7 +259,8 @@ function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: b
 }
 
 export default function App() {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [processedImage, setProcessedImage] = useState<ProcessedImage | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -263,18 +274,36 @@ export default function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const handleFileSelect = (file: File) => {
-    setSelectedFile(file);
-    console.log("Selected file:", file.name);
+  const handleFileSelect = async (file: File) => {
+    setIsProcessing(true);
+    setProcessedImage(null);
+    
+    try {
+      console.log("Processing file:", file.name);
+      const processed = await processImageForUpscaling(file);
+      setProcessedImage(processed);
+      console.log("Processing complete:", {
+        original: `${processed.originalWidth}x${processed.originalHeight}`,
+        upscaled: `${processed.upscaledWidth}x${processed.upscaledHeight}`,
+        pixelsAdded: processed.pixelsAdded,
+        scaleFactor: processed.scaleFactor
+      });
+    } catch (error) {
+      console.error("Error processing image:", error);
+      alert(`Error processing image: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleDownload = () => {
-    if (selectedFile) {
-      // Create a download link for the selected file
-      const url = URL.createObjectURL(selectedFile);
+    if (processedImage) {
+      // Convert the upscaled image data URL to blob and download
+      const blob = dataUrlToBlob(processedImage.upscaledDataUrl);
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `upscaled_${selectedFile.name}`;
+      a.download = `upscaled_${processedImage.originalFile.name.replace(/\.[^/.]+$/, '')}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -283,7 +312,8 @@ export default function App() {
   };
 
   const handleClear = () => {
-    setSelectedFile(null);
+    setProcessedImage(null);
+    setIsProcessing(false);
   };
 
   return (
@@ -336,16 +366,18 @@ export default function App() {
 
         {/* Upload Area or Uploaded State */}
         <div className="relative mb-8 md:mb-16">
-          {selectedFile ? (
+          {processedImage ? (
             <UploadedState 
               isMobile={isMobile}
               onDownload={handleDownload}
               onClear={handleClear}
+              processedImage={processedImage}
             />
           ) : (
             <Upload 
               isMobile={isMobile} 
               onFileSelect={handleFileSelect}
+              isProcessing={isProcessing}
             />
           )}
         </div>
