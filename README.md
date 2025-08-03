@@ -2,14 +2,6 @@
 
 Pixel art upscaling application built with React and TypeScript.
 
-## Features
-
-- 🎨 Upload and preview pixel art images
-- 🚀 AI-powered image upscaling
-- 📱 Responsive design for desktop and mobile
-- ⚡ Fast and modern React application
-- 🎯 Built with TypeScript for type safety
-
 ## Technologies Used
 
 - React 18
