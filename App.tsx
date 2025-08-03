@@ -5,6 +5,7 @@ import svgPathsUploadedMobile from "./imports/svg-2ij2klx2ty";
 // Placeholder for Pikachu image - replace with actual asset
 const imgPikachu = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRkYwMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2MFFNNTAgNjVRNjAgNjAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHRleHQgeD0iNTAiIHk9IjkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjMDAwIj5QaWthY2h1PC90ZXh0Pjwvc3ZnPg==";
 import { useState, useEffect } from "react";
+import { upscalePixelArt, downloadCanvas } from "./src/utils/pixelArtScaler";
 
 function UploadCloud({ isMobile = false }: { isMobile?: boolean }) {
   const size = isMobile ? "size-20" : "size-[120px]";
@@ -196,7 +197,13 @@ function Upload({ isMobile = false, onFileSelect }: { isMobile?: boolean; onFile
   );
 }
 
-function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: boolean; onDownload: () => void; onClear: () => void }) {
+function UploadedState({ isMobile = false, onDownload, onClear, isProcessing = false, error = null }: { 
+  isMobile?: boolean; 
+  onDownload: () => void; 
+  onClear: () => void;
+  isProcessing?: boolean;
+  error?: string | null;
+}) {
   const textSize = isMobile ? "text-[25px]" : "text-[30px]";
   const buttonTextSize = isMobile ? "text-[20px]" : "text-[30px]";
   const padding = isMobile ? "py-[50px]" : "py-[60px]";
@@ -207,11 +214,27 @@ function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: b
       <div className={`box-border content-stretch flex flex-col gap-5 items-center justify-center overflow-clip px-4 ${padding} relative`}>
         <div className={`flex flex-col font-['Pixelify_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-[#f1d302] ${textSize} text-center text-nowrap`}>
           <p className="block leading-[normal] whitespace-pre">
-            Your image is ready
+            {isProcessing ? "Processing your image..." : error ? "Error processing image" : "Your image is ready (4000x4000)"}
           </p>
         </div>
         
+        {error && (
+          <div className={`flex flex-col font-['Pixelify_Sans:Regular',_sans-serif] font-normal justify-center leading-[0] relative shrink-0 text-red-400 text-[16px] text-center max-w-md`}>
+            <p className="block leading-[normal] whitespace-pre-wrap">
+              {error}
+            </p>
+          </div>
+        )}
+        
+        {/* Processing indicator */}
+        {isProcessing && (
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#f1d302]"></div>
+          </div>
+        )}
+        
         {/* Buttons */}
+        {!isProcessing && !error && (
         <div className="box-border content-stretch flex flex-row gap-[30px] items-start justify-start overflow-clip p-[10px] relative shrink-0">
           {/* Download Button */}
           <button 
@@ -222,8 +245,11 @@ function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: b
               <p className="block leading-[normal] whitespace-pre">Download</p>
             </div>
           </button>
-          
-          {/* Clear Button */}
+        </div>
+        )}
+        
+        {/* Clear button - always visible when there's a file */}
+        <div className="box-border content-stretch flex flex-row gap-[30px] items-start justify-start overflow-clip p-[10px] relative shrink-0">
           <button 
             onClick={onClear}
             className={`relative rounded-lg shrink-0 ${buttonWidth} hover:bg-[#f1d302]/10 transition-colors`}
@@ -251,6 +277,9 @@ function UploadedState({ isMobile = false, onDownload, onClear }: { isMobile?: b
 export default function App() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [scaledCanvas, setScaledCanvas] = useState<HTMLCanvasElement | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -263,27 +292,46 @@ export default function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = async (file: File) => {
     setSelectedFile(file);
-    console.log("Selected file:", file.name);
+    setError(null);
+    setIsProcessing(true);
+    
+    try {
+      console.log("Processing file:", file.name);
+      
+      // Process the image using our pixel art scaling
+      const result = await upscalePixelArt(file);
+      
+      // Use the target result (4000x4000) for download
+      setScaledCanvas(result.target);
+      
+      console.log("Image processed successfully:", {
+        original: `${file.name}`,
+        scaled: `${result.target.width}x${result.target.height}`
+      });
+    } catch (err) {
+      console.error("Error processing image:", err);
+      setError(err instanceof Error ? err.message : 'Failed to process image');
+      setSelectedFile(null);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleDownload = () => {
-    if (selectedFile) {
-      // Create a download link for the selected file
-      const url = URL.createObjectURL(selectedFile);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `upscaled_${selectedFile.name}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+    if (scaledCanvas && selectedFile) {
+      // Download the scaled 4000x4000 image
+      const filename = `upscaled_4k_${selectedFile.name.replace(/\.[^/.]+$/, "")}.png`;
+      downloadCanvas(scaledCanvas, filename);
     }
   };
 
   const handleClear = () => {
     setSelectedFile(null);
+    setScaledCanvas(null);
+    setError(null);
+    setIsProcessing(false);
   };
 
   return (
@@ -341,6 +389,8 @@ export default function App() {
               isMobile={isMobile}
               onDownload={handleDownload}
               onClear={handleClear}
+              isProcessing={isProcessing}
+              error={error}
             />
           ) : (
             <Upload 
