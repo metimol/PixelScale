@@ -65,7 +65,7 @@ export default function NotFound() {
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
             {/* Back to Home Button */}
             <Link 
-              to="/PixelScale/"
+              to="/"
               className="bg-[#f1d302] text-[#020100] font-['Pixelify_Sans:SemiBold',_sans-serif] font-semibold px-8 py-4 text-[18px] md:text-[20px] lg:text-[24px] rounded-lg hover:bg-[#f1d302]/90 transition-colors duration-200 border-2 border-[#f1d302] hover:scale-105 transform transition-transform"
             >
               Return Home
