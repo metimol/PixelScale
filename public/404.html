@@ -1,15 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/PixelScale/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
     <title>PixelScale - Free AI Pixel Art Upscaler | Enhance Retro Game Art Online</title>
     <meta name="title" content="PixelScale - Free AI Pixel Art Upscaler | Enhance Retro Game Art Online" />
-    <meta name="description" content="Free online AI-powered pixel art upscaler. Transform low-resolution pixel art into crisp, high-quality images. No sign-up required, no watermarks. Perfect for retro game art, sprites, and digital artwork." />
-    <meta name="keywords" content="pixel art upscaler, AI pixel art, upscale pixel art online, free pixel art tool, pixel art enhancement, retro game art upscaler, sprite upscaler, pixel art AI, image upscaling, digital art enhancement" />
-    <meta name="author" content="Metimol" />
+    <meta name="description" content="Free online AI-powered pixel art upscaler. Transform low-resolution pixel art into crisp, high-quality images. No sign-up required, no watermarks." />
+    <meta name="keywords" content="pixel art, upscaler, AI, image enhancement, retro games, sprites, online tool, free" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
@@ -26,24 +26,23 @@
     <meta property="og:image:width" content="32" />
     <meta property="og:image:height" content="32" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:site_name" content="PixelScale" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://metimol.github.io/PixelScale/" />
     <meta property="twitter:title" content="PixelScale - Free AI Pixel Art Upscaler" />
-    <meta property="twitter:description" content="Free online AI-powered pixel art upscaler. Transform low-resolution pixel art into crisp, high-quality images. No sign-up required, no watermarks." />
+    <meta property="twitter:description" content="Free online AI-powered pixel art upscaler. Transform low-resolution pixel art into crisp, high-quality images." />
     <meta property="twitter:image" content="https://metimol.github.io/PixelScale/favicon.svg" />
-    <meta property="twitter:creator" content="@metimol" />
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <!-- Additional SEO Meta Tags -->
+    <meta name="author" content="Metimol" />
+    <meta name="creator" content="Metimol" />
+    <meta name="publisher" content="Metimol" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#020100" />
+    <meta name="theme-color" content="#f1d302" />
     
-    <!-- Google Search Console Verification (replace with your own) -->
-    <!-- <meta name="google-site-verification" content="your-verification-code-here" /> -->
-    
-    <!-- Security -->
+    <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
@@ -52,6 +51,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GitHub Pages SPA Redirect Script -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      // Store the current URL path in session storage and redirect to the root path
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -90,24 +105,8 @@
     </script>
   </head>
   <body>
-    <!-- GitHub Pages SPA Script -->
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // https://github.com/rafgraph/spa-github-pages
-      // Check if this is a redirect from a GitHub Pages 404 and handle it
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
-    </script>
-    
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/PixelScale/assets/index-C77xpBzF.js"></script>
+    <link rel="stylesheet" crossorigin href="/PixelScale/assets/index-ROnVn5B4.css">
   </body>
 </html>
