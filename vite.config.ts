@@ -15,4 +15,8 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
   },
+  server: {
+    // SPA fallback for development
+    historyApiFallback: true,
+  },
 })
